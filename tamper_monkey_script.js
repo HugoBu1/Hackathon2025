@@ -71,13 +71,17 @@
         function addCss() {
             const style = document.createElement('style');
             style.innerHTML = `
+                /* Datadog Native Design System */
+                
+                /* Loading Spinner - Datadog Style */
                 #loading-spinner {
-                    border: 16px solid #f3f3f3;
-                    border-top: 16px solid #3498db;
+                    border: 3px solid #f3f4f6;
+                    border-top: 3px solid #8b5cf6;
                     border-radius: 50%;
-                    width: 15px;
-                    height: 15px;
-                    animation: spin 2s linear infinite;
+                    width: 12px;
+                    height: 12px;
+                    animation: spin 1s linear infinite;
+                    margin-left: 8px;
                 }
 
                 @keyframes spin {
@@ -85,93 +89,249 @@
                     100% { transform: rotate(360deg); }
                 }
 
+                /* Widget Highlighting - Soft Purple Theme */
                 .highlight {
-                    background-color: #ffeb3b !important;
-                    border: 2px solid #ff9800 !important;
-                    border-radius: 4px !important;
+                    background-color: rgba(99, 102, 241, 0.1) !important;
+                    border: 2px solid #8b5cf6 !important;
+                    border-radius: 6px !important;
+                    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+                    transition: all 0.15s ease !important;
                 }
 
-                .title_bar #dash-search-widget, #dd-search-container #dash-search-widget {
-                    height: 30px;
-                    margin-right: 8px;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
+                /* Main Search Container - Native Datadog Look */
+                #dd-search-container {
+                    background: #f9fafb;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 8px;
+                    padding: 12px 16px;
+                    margin: 8px 0;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    flex-wrap: wrap;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                    position: relative;
+                }
+
+                /* Search Input Field */
+                #dd-search-container #dash-search-widget {
+                    height: 32px;
                     padding: 0 12px;
+                    border: 1px solid #d1d5db;
+                    border-radius: 6px;
+                    background: #ffffff;
+                    color: #374151;
+                    font-size: 14px;
+                    font-family: inherit;
+                    min-width: 200px;
+                    flex: 1;
+                    transition: all 0.15s ease;
                 }
 
-                .title_bar #dash-search-widget:focus, #dd-search-container #dash-search-widget:focus {
-                    border-color: #3279d7;
+                #dd-search-container #dash-search-widget::placeholder {
+                    color: #9ca3af;
+                }
+
+                #dd-search-container #dash-search-widget:focus {
                     outline: none;
+                    border-color: #8b5cf6;
+                    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
                 }
 
+                /* Button System */
                 .dd-search-button {
-                    color: #fff !important;
-                    background-color: #3279d7 !important;
-                    border: none !important;
-                    border-radius: 4px !important;
-                    padding: 6px 12px !important;
-                    margin: 0 4px !important;
-                    cursor: pointer !important;
+                    height: 32px;
+                    padding: 0 12px;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 6px;
+                    background: #f8f9fa;
+                    color: #6b7280;
+                    font-size: 13px;
+                    font-weight: 400;
+                    font-family: inherit;
+                    cursor: pointer;
+                    transition: all 0.15s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    white-space: nowrap;
                 }
 
                 .dd-search-button:hover {
-                    background-color: #285ea5 !important;
+                    background: #f3f4f6;
+                    border-color: #d1d5db;
+                    color: #4b5563;
                 }
 
-                .title_bar #match-count, #dd-search-container #match-count {
+                .dd-search-button:active {
+                    transform: translateY(1px);
+                }
+
+                /* Primary Button (Search) - More subtle */
+                .dd-search-button.primary {
+                    background: #f3f4f6;
+                    color: #8b5cf6;
+                    border-color: #e5e7eb;
+                    font-weight: 500;
+                }
+
+                .dd-search-button.primary:hover {
+                    background: #ede9fe;
+                    border-color: #c4b5fd;
+                    color: #7c3aed;
+                }
+
+                /* Magic Button - More subtle gradient */
+                .dd-search-button.magic {
+                    background: linear-gradient(135deg, #f3f4f6 0%, #ede9fe 100%);
+                    color: #8b5cf6;
+                    border-color: #e5e7eb;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+
+                .dd-search-button.magic:hover {
+                    background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+                    color: #7c3aed;
+                    border-color: #c4b5fd;
+                }
+
+                /* Match Count Display */
+                #dd-search-container #match-count {
+                    background: #f3f4f6;
+                    color: #6b7280;
+                    font-size: 12px;
+                    font-weight: 500;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    white-space: nowrap;
+                }
+
+                /* Search Results Dropdown */
+                #dd-search-container #search-results {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    background: #ffffff;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 8px;
+                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                    max-height: 300px;
+                    overflow-y: auto;
+                    z-index: 1000;
                     margin-top: 4px;
-                    color: #666;
-                }
-
-                .title_bar #search-results, #dd-search-container #search-results {
                     list-style: none;
                     padding: 0;
-                    margin-top: 8px;
-                    max-height: 200px;
-                    overflow-y: auto;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                    background: #fff;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                    margin-left: 0;
+                    margin-right: 0;
                 }
 
-                .title_bar #search-results li, #dd-search-container #search-results li {
+                #dd-search-container #search-results li {
                     padding: 8px 12px;
-                    border-bottom: 1px solid #eee;
-                    font-weight: bold !important;
-                }
-
-                .title_bar .widget-name, #dd-search-container .widget-name {
-                    font-weight: bold !important;
-                }
-
-                .title_bar .widget-explanation, #dd-search-container .widget-explanation {
-                    font-weight: normal !important;
-                    color: #666;
-                }
-
-                .title_bar #search-results li:hover, #dd-search-container #search-results li:hover {
-                    background-color: #f7f7f7;
+                    border-bottom: 1px solid #f3f4f6;
                     cursor: pointer;
+                    transition: background-color 0.15s ease;
+                }
+
+                #dd-search-container #search-results li:last-child {
+                    border-bottom: none;
+                }
+
+                #dd-search-container #search-results li:hover {
+                    background-color: #f3f4f6;
+                }
+
+                #dd-search-container .widget-name {
+                    font-weight: 600;
+                    color: #1f2937;
+                    font-size: 14px;
+                    line-height: 1.4;
+                }
+
+                #dd-search-container .widget-explanation {
+                    font-weight: 400;
+                    color: #6b7280;
+                    font-size: 12px;
+                    line-height: 1.3;
+                    margin-top: 2px;
+                }
+
+                /* Responsive Design */
+                @media (max-width: 768px) {
+                    #dd-search-container {
+                        flex-direction: column;
+                        align-items: stretch;
+                    }
+                    
+                    #dd-search-container #dash-search-widget {
+                        width: 100%;
+                        margin-bottom: 8px;
+                    }
+                    
+                    .dd-search-button {
+                        width: 100%;
+                        margin-bottom: 4px;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    #dd-search-container {
+                        padding: 8px 12px;
+                    }
+                    
+                    .dd-search-button {
+                        height: 28px;
+                        font-size: 12px;
+                        padding: 0 8px;
+                    }
+                    
+                    #dd-search-container #dash-search-widget {
+                        height: 28px;
+                        font-size: 13px;
+                    }
+                }
+
+                /* Legacy support for old selectors */
+                .title_bar #dash-search-widget,
+                .title_bar #match-count,
+                .title_bar #search-results,
+                .title_bar #search-results li,
+                .title_bar .widget-name,
+                .title_bar .widget-explanation,
+                .title_bar #search-results li:hover {
+                    /* Inherit from new styles above */
                 }
             `;
             document.head.appendChild(style);
         }
 
         function createUI(titleBar) {
+            // Check if UI already exists and remove it first
+            const existingContainer = document.getElementById('dd-search-container');
+            if (existingContainer) {
+                console.log('DD Search: Removing existing UI before creating new one');
+                existingContainer.remove();
+            }
+            
+            // Create a container that wraps all search elements
+            const searchContainer = document.createElement('div');
+            searchContainer.id = 'dd-search-container';
+            
             searchBar.type = 'text';
             searchBar.id = 'dash-search-widget';
-            searchBar.placeholder = 'Search Widgets';
+            searchBar.placeholder = 'Search widgets...';
 
             const searchButton = document.createElement('button');
-            searchButton.className = 'dd-search-button';
+            searchButton.className = 'dd-search-button primary';
             searchButton.textContent = 'Search';
             searchButton.onclick = handleSearch;
 
             const magicButton = document.createElement('button');
-            magicButton.className = 'dd-search-button';
+            magicButton.className = 'dd-search-button magic';
             magicButton.innerHTML = '🔮';
-            magicButton.title = 'Magic Search';
+            magicButton.title = 'AI Magic Search';
             magicButton.onclick = handleMagicButtonClick;
 
             const nextButton = document.createElement('button');
@@ -189,12 +349,16 @@
             loadingSpinner.id = 'loading-spinner';
             loadingSpinner.style.display = 'none';
 
-            titleBar.appendChild(searchBar);
-            titleBar.appendChild(searchButton);
-            titleBar.appendChild(magicButton);
-            titleBar.appendChild(prevButton);
-            titleBar.appendChild(nextButton);
-            titleBar.appendChild(loadingSpinner);
+            // Add all elements to the container
+            searchContainer.appendChild(searchBar);
+            searchContainer.appendChild(searchButton);
+            searchContainer.appendChild(magicButton);
+            searchContainer.appendChild(prevButton);
+            searchContainer.appendChild(nextButton);
+            searchContainer.appendChild(loadingSpinner);
+
+            // Add the container to the title bar
+            titleBar.appendChild(searchContainer);
 
             // Event listeners
             searchBar.addEventListener('input', debounce(handleSearch, 300));
@@ -474,50 +638,54 @@
             if (!resultList) {
                 resultList = document.createElement('ul');
                 resultList.id = 'search-results';
-                if (titleBar) {
+                const searchContainer = document.getElementById('dd-search-container');
+                if (searchContainer) {
+                    // Make the container position relative for the dropdown
+                    searchContainer.style.position = 'relative';
+                    searchContainer.appendChild(resultList);
+                } else if (titleBar) {
                     titleBar.appendChild(resultList);
                 } else {
                     document.body.appendChild(resultList);
                 }
             }
 
-            // Clear previous results
             resultList.innerHTML = '';
 
-            if (!results || results.length === 0) {
-                const noResults = document.createElement('li');
-                noResults.textContent = 'No results found';
-                noResults.style.fontStyle = 'italic';
-                noResults.style.color = '#666';
-                resultList.appendChild(noResults);
-                updateMatchCount(0);
+            if (results.length === 0) {
+                const noResultsItem = document.createElement('li');
+                noResultsItem.textContent = 'No widgets found';
+                noResultsItem.style.color = '#9ca3af';
+                noResultsItem.style.fontStyle = 'italic';
+                noResultsItem.style.textAlign = 'center';
+                resultList.appendChild(noResultsItem);
+                resultList.style.display = 'block';
                 return;
             }
 
             results.forEach((result, index) => {
                 const listItem = document.createElement('li');
+                
+                const widgetName = document.createElement('div');
+                widgetName.className = 'widget-name';
+                widgetName.textContent = result.title || 'Untitled Widget';
+                
+                const widgetExplanation = document.createElement('div');
+                widgetExplanation.className = 'widget-explanation';
+                widgetExplanation.textContent = result.explanation || 'No description available';
 
-                // Vérifier si c'est un résultat de magic search (contient ":")
-                if (result.title.includes(':')) {
-                    // Gérer les cas avec ou sans espace après ":"
-                    const colonIndex = result.title.indexOf(':');
-                    const widgetName = result.title.substring(0, colonIndex).trim();
-                    const explanation = result.title.substring(colonIndex + 1).trim();
-                    
-                    if (explanation) {
-                        listItem.innerHTML = `<span class="widget-name">${widgetName}</span> : <span class="widget-explanation">${explanation}</span>`;
-                        listItem.style.fontWeight = 'normal'; // Override le CSS global pour ce cas
-                    } else {
-                        // Si pas d'explication après ":", afficher juste le nom
-                        listItem.innerHTML = `<span class="widget-name">${widgetName}</span>`;
-                    }
-                } else {
-                    listItem.innerHTML = `<span class="widget-name">${result.title}</span>`;
-                }
-
-                listItem.onclick = () => focusOnWidget(index);
+                listItem.appendChild(widgetName);
+                listItem.appendChild(widgetExplanation);
+                
+                listItem.onclick = () => {
+                    focusOnWidget(index);
+                    resultList.style.display = 'none';
+                };
+                
                 resultList.appendChild(listItem);
             });
+
+            resultList.style.display = 'block';
             updateMatchCount(results.length);
         }
 
@@ -582,17 +750,24 @@
         }
 
         function updateMatchCount(count) {
-            let countDisplay = document.getElementById('match-count');
-            if (!countDisplay) {
-                countDisplay = document.createElement('div');
-                countDisplay.id = 'match-count';
-                if (titleBar) {
-                    titleBar.appendChild(countDisplay);
+            let matchCountElement = document.getElementById('match-count');
+            const searchContainer = document.getElementById('dd-search-container');
+            
+            if (!matchCountElement && searchContainer) {
+                matchCountElement = document.createElement('div');
+                matchCountElement.id = 'match-count';
+                searchContainer.appendChild(matchCountElement);
+            }
+            
+            if (matchCountElement) {
+                if (count > 0) {
+                    matchCountElement.textContent = `${count} match${count > 1 ? 'es' : ''}`;
+                    matchCountElement.style.display = 'block';
                 } else {
-                    document.body.appendChild(countDisplay);
+                    matchCountElement.textContent = 'No matches';
+                    matchCountElement.style.display = 'block';
                 }
             }
-            countDisplay.textContent = count + ' results';
         }
 
         async function parseWidgets() {
@@ -838,11 +1013,6 @@
             return 'Widget sans titre';
         }
 
-        // CSS minimal
-        const style = document.createElement('style');
-        style.textContent = `.dd-search-highlight { background-color: #ffeb3b !important; border: 2px solid #ff9800 !important; border-radius: 4px !important; }`;
-        document.head.appendChild(style);
-
         // Variables pour la détection de changement d'URL
         let currentUrl = window.location.href;
         let isInitialized = false;
@@ -905,7 +1075,14 @@
         function cleanup() {
             console.log('DD Search: Nettoyage en cours...');
             
-            // Supprimer tous les éléments de l'interface de recherche
+            // Remove ALL search containers first (including duplicates)
+            const searchContainers = document.querySelectorAll('#dd-search-container');
+            searchContainers.forEach(container => {
+                console.log('DD Search: Suppression container de recherche');
+                container.remove();
+            });
+            
+            // Supprimer tous les éléments de l'interface de recherche individuellement
             const existingElements = [
                 '#dash-search-widget', 
                 '#search-results', 
@@ -927,6 +1104,7 @@
             currentIndex = 0;
             isMagicSearchRunning = false;
             titleBar = null; // Reset de la référence à la title bar
+            titleBarFound = false; // Reset this flag too
             clearFilter();
             clearHighlights();
             
