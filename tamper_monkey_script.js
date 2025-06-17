@@ -71,16 +71,27 @@
         function addCss() {
             const style = document.createElement('style');
             style.innerHTML = `
+<<<<<<< HEAD
                 /* Datadog Native Design System */
                 
                 /* Loading Spinner - Datadog Style */
                 #loading-spinner {
                     border: 3px solid #f3f4f6;
                     border-top: 3px solid #8b5cf6;
+=======
+                /* Loading spinner with Datadog colors */
+                #loading-spinner {
+                    border: 3px solid #f3f4f6;
+                    border-top: 3px solid #6366f1;
+>>>>>>> 7ca3201 (features)
                     border-radius: 50%;
                     width: 12px;
                     height: 12px;
                     animation: spin 1s linear infinite;
+<<<<<<< HEAD
+=======
+                    display: inline-block;
+>>>>>>> 7ca3201 (features)
                     margin-left: 8px;
                 }
 
@@ -89,6 +100,7 @@
                     100% { transform: rotate(360deg); }
                 }
 
+<<<<<<< HEAD
                 /* Widget Highlighting - Soft Purple Theme */
                 .highlight {
                     background-color: rgba(99, 102, 241, 0.1) !important;
@@ -100,27 +112,51 @@
 
                 /* Main Search Container - Native Datadog Look */
                 #dd-search-container {
+=======
+                /* Widget highlighting */
+                .highlight {
+                    background-color: rgba(99, 102, 241, 0.1) !important;
+                    border: 2px solid #6366f1 !important;
+                    border-radius: 6px !important;
+                    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+                }
+
+                /* Datadog-native search container */
+                .title_bar #dd-search-container, #dd-search-container {
+>>>>>>> 7ca3201 (features)
                     background: #f9fafb;
                     border: 1px solid #e5e7eb;
                     border-radius: 8px;
                     padding: 12px 16px;
                     margin: 8px 0;
                     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+<<<<<<< HEAD
+=======
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+>>>>>>> 7ca3201 (features)
                     display: flex;
                     align-items: center;
                     gap: 8px;
                     flex-wrap: wrap;
+<<<<<<< HEAD
                     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
                     position: relative;
                 }
 
                 /* Search Input Field */
                 #dd-search-container #dash-search-widget {
+=======
+                }
+
+                /* Search input with Datadog styling */
+                .title_bar #dash-search-widget, #dd-search-container #dash-search-widget {
+>>>>>>> 7ca3201 (features)
                     height: 32px;
                     padding: 0 12px;
                     border: 1px solid #d1d5db;
                     border-radius: 6px;
                     background: #ffffff;
+<<<<<<< HEAD
                     color: #374151;
                     font-size: 14px;
                     font-family: inherit;
@@ -149,17 +185,53 @@
                     color: #6b7280;
                     font-size: 13px;
                     font-weight: 400;
+=======
+                    font-size: 14px;
+                    font-family: inherit;
+                    color: #374151;
+                    transition: all 0.15s ease;
+                    min-width: 200px;
+                    flex: 1;
+                }
+
+                .title_bar #dash-search-widget:focus, #dd-search-container #dash-search-widget:focus {
+                    border-color: #6366f1;
+                    outline: none;
+                    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+                }
+
+                .title_bar #dash-search-widget::placeholder, #dd-search-container #dash-search-widget::placeholder {
+                    color: #9ca3af;
+                    font-style: normal;
+                }
+
+                /* Datadog-style buttons */
+                .dd-search-button {
+                    height: 32px;
+                    padding: 0 12px;
+                    border: 1px solid #d1d5db;
+                    border-radius: 6px;
+                    background: #ffffff;
+                    color: #374151;
+                    font-size: 13px;
+                    font-weight: 500;
+>>>>>>> 7ca3201 (features)
                     font-family: inherit;
                     cursor: pointer;
                     transition: all 0.15s ease;
                     display: inline-flex;
                     align-items: center;
                     justify-content: center;
+<<<<<<< HEAD
+=======
+                    min-width: fit-content;
+>>>>>>> 7ca3201 (features)
                     white-space: nowrap;
                 }
 
                 .dd-search-button:hover {
                     background: #f3f4f6;
+<<<<<<< HEAD
                     border-color: #d1d5db;
                     color: #4b5563;
                 }
@@ -210,6 +282,55 @@
 
                 /* Search Results Dropdown */
                 #dd-search-container #search-results {
+=======
+                    border-color: #9ca3af;
+                }
+
+                .dd-search-button:active {
+                    background: #e5e7eb;
+                    transform: translateY(1px);
+                }
+
+                /* Primary button (Search) */
+                .dd-search-button.primary {
+                    background: #6366f1;
+                    border-color: #6366f1;
+                    color: #ffffff;
+                }
+
+                .dd-search-button.primary:hover {
+                    background: #5856eb;
+                    border-color: #5856eb;
+                }
+
+                /* Magic button special styling */
+                .dd-search-button.magic {
+                    background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+                    border-color: #8b5cf6;
+                    color: #ffffff;
+                    font-size: 14px;
+                }
+
+                .dd-search-button.magic:hover {
+                    background: linear-gradient(135deg, #7c3aed 0%, #5856eb 100%);
+                    border-color: #7c3aed;
+                }
+
+                /* Match count styling */
+                .title_bar #match-count, #dd-search-container #match-count {
+                    font-size: 12px;
+                    color: #6b7280;
+                    font-weight: 500;
+                    margin: 0;
+                    padding: 4px 8px;
+                    background: #f3f4f6;
+                    border-radius: 4px;
+                    border: 1px solid #e5e7eb;
+                }
+
+                /* Search results dropdown */
+                .title_bar #search-results, #dd-search-container #search-results {
+>>>>>>> 7ca3201 (features)
                     position: absolute;
                     top: 100%;
                     left: 0;
@@ -223,13 +344,18 @@
                     z-index: 1000;
                     margin-top: 4px;
                     list-style: none;
+<<<<<<< HEAD
                     padding: 0;
                     margin-left: 0;
                     margin-right: 0;
+=======
+                    padding: 4px;
+>>>>>>> 7ca3201 (features)
                 }
 
                 #dd-search-container #search-results li {
                     padding: 8px 12px;
+<<<<<<< HEAD
                     border-bottom: 1px solid #f3f4f6;
                     cursor: pointer;
                     transition: background-color 0.15s ease;
@@ -268,15 +394,56 @@
                     #dd-search-container #dash-search-widget {
                         width: 100%;
                         margin-bottom: 8px;
+=======
+                    border-radius: 4px;
+                    font-size: 13px;
+                    color: #374151;
+                    cursor: pointer;
+                    transition: background-color 0.15s ease;
+                    border: none;
+                }
+
+                .title_bar #search-results li:hover, #dd-search-container #search-results li:hover {
+                    background: #f3f4f6;
+                }
+
+                .title_bar .widget-name, #dd-search-container .widget-name {
+                    font-weight: 600;
+                    color: #1f2937;
+                }
+
+                .title_bar .widget-explanation, #dd-search-container .widget-explanation {
+                    font-weight: 400;
+                    color: #6b7280;
+                    font-size: 12px;
+                }
+
+                /* Responsive behavior */
+                @media (max-width: 768px) {
+                    .title_bar #dd-search-container, #dd-search-container {
+                        flex-direction: column;
+                        align-items: stretch;
+                        gap: 8px;
+                    }
+                    
+                    .title_bar #dash-search-widget, #dd-search-container #dash-search-widget {
+                        min-width: unset;
+                        width: 100%;
+>>>>>>> 7ca3201 (features)
                     }
                     
                     .dd-search-button {
                         width: 100%;
+<<<<<<< HEAD
                         margin-bottom: 4px;
+=======
+                        justify-content: center;
+>>>>>>> 7ca3201 (features)
                     }
                 }
 
                 @media (max-width: 480px) {
+<<<<<<< HEAD
                     #dd-search-container {
                         padding: 8px 12px;
                     }
@@ -302,12 +469,25 @@
                 .title_bar .widget-explanation,
                 .title_bar #search-results li:hover {
                     /* Inherit from new styles above */
+=======
+                    .title_bar #dd-search-container, #dd-search-container {
+                        padding: 8px 12px;
+                        margin: 4px 0;
+                    }
+                    
+                    .dd-search-button {
+                        font-size: 12px;
+                        height: 28px;
+                        padding: 0 8px;
+                    }
+>>>>>>> 7ca3201 (features)
                 }
             `;
             document.head.appendChild(style);
         }
 
         function createUI(titleBar) {
+<<<<<<< HEAD
             // Check if UI already exists and remove it first
             const existingContainer = document.getElementById('dd-search-container');
             if (existingContainer) {
@@ -315,6 +495,8 @@
                 existingContainer.remove();
             }
             
+=======
+>>>>>>> 7ca3201 (features)
             // Create a container that wraps all search elements
             const searchContainer = document.createElement('div');
             searchContainer.id = 'dd-search-container';
@@ -418,7 +600,6 @@
 
             // Store original states if not already stored
             if (originalWidgetStates.size === 0) {
-                // Only look for actual dashboard widgets, not all elements with IDs
                 const elements = document.querySelectorAll('.dashboard_widget');
                 elements.forEach(element => {
                     const id = element.id;
@@ -434,21 +615,56 @@
 
             // Get all widget IDs from search results
             const matchingIds = currentResults.map(result => result.id);
-            console.log('DD Search: Filtering to show only these widgets:', matchingIds);
+            console.log('DD Search: Filtering widgets, removing gaps:', matchingIds);
 
-            // Hide only dashboard widgets, not all elements
+            // Hide non-matching widgets and ensure matching ones are visible
             const dashboardWidgets = document.querySelectorAll('.dashboard_widget');
             dashboardWidgets.forEach(widget => {
                 const id = widget.id;
-                if (id && id.trim() && !matchingIds.includes(id)) {
-                    widget.classList.add('widget-filtered-out');
-                    widget.style.display = 'none';
-                    console.log('DD Search: Hiding widget:', id);
+                if (id && id.trim()) {
+                    if (matchingIds.includes(id)) {
+                        // Show matching widget
+                        widget.classList.remove('widget-filtered-out');
+                        widget.classList.add('widget-filtered-in');
+                        widget.style.display = '';
+                        console.log('DD Search: Showing widget:', id);
+                    } else {
+                        // Hide non-matching widget (this removes gaps naturally)
+                        widget.classList.add('widget-filtered-out');
+                        widget.style.display = 'none';
+                    }
                 }
             });
 
-            // Ensure matching widgets are visible
+            // Add CSS to make visible widgets flow together naturally
+            addFilteredCSS();
+            
+            // Alternative: if CSS doesn't work well, move widgets to a clean container
+            moveWidgetsToCleanContainer(matchingIds);
+        }
+
+        function moveWidgetsToCleanContainer(matchingIds) {
+            // Create a simple container with no spacing issues
+            let cleanContainer = document.getElementById('dd-clean-container');
+            if (!cleanContainer) {
+                cleanContainer = document.createElement('div');
+                cleanContainer.id = 'dd-clean-container';
+                cleanContainer.style.cssText = `
+                    margin: 20px;
+                    padding: 0;
+                    display: block;
+                `;
+                
+                // Insert in the main dashboard area
+                const dashboardArea = document.querySelector('.dashboard-content, .main-content, main') || 
+                                    document.querySelector('.dashboard_widget')?.parentNode || 
+                                    document.body;
+                dashboardArea.insertBefore(cleanContainer, dashboardArea.firstChild);
+            }
+
+            // Move filtered widgets to the clean container
             matchingIds.forEach(id => {
+<<<<<<< HEAD
                 let widget = document.getElementById(id);
                 
                 // Essayer les différents formats d'ID
@@ -466,35 +682,93 @@
                     console.log('DD Search: Showing widget:', id, '→', widget.id);
                 } else {
                     console.log('DD Search: Widget not found or not a dashboard widget:', id);
+=======
+                const widget = document.getElementById(id);
+                if (widget && widget.classList.contains('widget-filtered-in')) {
+                    cleanContainer.appendChild(widget);
+                    
+                    // Reset widget styles to remove any grid/flex interference
+                    widget.style.cssText += `
+                        display: block !important;
+                        margin: 10px 0 !important;
+                        width: 100% !important;
+                        position: relative !important;
+                        float: none !important;
+                    `;
+>>>>>>> 7ca3201 (features)
                 }
             });
+        }
+
+        function addFilteredCSS() {
+            // Add CSS to make filtered widgets appear closer together
+            let filterStyle = document.getElementById('dd-filter-style');
+            if (!filterStyle) {
+                filterStyle = document.createElement('style');
+                filterStyle.id = 'dd-filter-style';
+                filterStyle.innerHTML = `
+                    /* Force filtered widgets to stack without gaps */
+                    .widget-filtered-in {
+                        margin: 10px 0 !important;
+                        padding: 0 !important;
+                        display: block !important;
+                        position: relative !important;
+                        float: none !important;
+                        clear: both !important;
+                        width: 100% !important;
+                        max-width: none !important;
+                        grid-column: unset !important;
+                        grid-row: unset !important;
+                        flex: none !important;
+                    }
+                    
+                    /* Override any grid/flex container that might add spacing */
+                    .dashboard_widget.widget-filtered-in {
+                        margin-bottom: 10px !important;
+                        margin-top: 10px !important;
+                        margin-left: 0 !important;
+                        margin-right: 0 !important;
+                    }
+                    
+                    /* First filtered widget */
+                    .dashboard_widget.widget-filtered-in:first-of-type {
+                        margin-top: 20px !important;
+                    }
+                    
+                    /* Remove any grid gaps for filtered widgets */
+                    .dashboard_widget.widget-filtered-in + .dashboard_widget.widget-filtered-in {
+                        margin-top: 5px !important;
+                    }
+                `;
+                document.head.appendChild(filterStyle);
+            }
         }
 
         function clearFilter() {
             console.log('DD Search: Clearing filter, restoring all widgets');
             
-            // Restore original display states for dashboard widgets only
+            // Remove the filter styling
+            const filterStyle = document.getElementById('dd-filter-style');
+            if (filterStyle) {
+                filterStyle.remove();
+            }
+            
+            // Restore original display states for dashboard widgets
             originalWidgetStates.forEach((state, id) => {
                 const widget = document.getElementById(id);
                 if (widget && widget.classList.contains('dashboard_widget')) {
                     widget.classList.remove('widget-filtered-out', 'widget-filtered-in');
                     
                     // Restore original styles
-                    if (state.display !== undefined) {
-                        widget.style.display = state.display || '';
-                    }
-                    if (state.visibility !== undefined) {
-                        widget.style.visibility = state.visibility || '';
-                    }
-                    if (state.opacity !== undefined) {
-                        widget.style.opacity = state.opacity || '';
-                    }
+                    widget.style.display = state.display || '';
+                    widget.style.visibility = state.visibility || '';
+                    widget.style.opacity = state.opacity || '';
                 }
             });
 
-            // Also clear any remaining filtered dashboard widgets
-            const filteredWidgets = document.querySelectorAll('.dashboard_widget.widget-filtered-out, .dashboard_widget.widget-filtered-in');
-            filteredWidgets.forEach(widget => {
+            // Make sure all dashboard widgets are visible
+            const allDashboardWidgets = document.querySelectorAll('.dashboard_widget');
+            allDashboardWidgets.forEach(widget => {
                 widget.classList.remove('widget-filtered-out', 'widget-filtered-in');
                 widget.style.display = '';
             });
