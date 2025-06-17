@@ -20,6 +20,7 @@
         let loadingSpinner;
         let isMagicSearchRunning = false;
         const aiGatewayEndpoint = 'https://openai-api-proxy.us1.staging.dog/v1/chat/completions';
+        let originalWidgetStates = new Map();
 
         // Mots vides optimisés (français + anglais)
         const stopwords = [
@@ -157,43 +158,43 @@
             document.head.appendChild(style);
         }
 
-            function createUI(titleBar) {
-        searchBar.type = 'text';
-        searchBar.id = 'dash-search-widget';
-        searchBar.placeholder = 'Search Widgets';
+        function createUI(titleBar) {
+            searchBar.type = 'text';
+            searchBar.id = 'dash-search-widget';
+            searchBar.placeholder = 'Search Widgets';
 
-        const searchButton = document.createElement('button');
-        searchButton.className = 'dd-search-button';
-        searchButton.textContent = 'Search';
-        searchButton.onclick = handleSearch;
+            const searchButton = document.createElement('button');
+            searchButton.className = 'dd-search-button';
+            searchButton.textContent = 'Search';
+            searchButton.onclick = handleSearch;
 
-        const magicButton = document.createElement('button');
-        magicButton.className = 'dd-search-button';
-        magicButton.innerHTML = '🔮';
-        magicButton.title = 'Magic Search';
-        magicButton.onclick = handleMagicButtonClick;
+            const magicButton = document.createElement('button');
+            magicButton.className = 'dd-search-button';
+            magicButton.innerHTML = '🔮';
+            magicButton.title = 'Magic Search';
+            magicButton.onclick = handleMagicButtonClick;
 
-        const nextButton = document.createElement('button');
-        nextButton.className = 'dd-search-button';
-        nextButton.textContent = 'Next';
-        nextButton.onclick = () => navigateResults(1);
+            const nextButton = document.createElement('button');
+            nextButton.className = 'dd-search-button';
+            nextButton.textContent = 'Next';
+            nextButton.onclick = () => navigateResults(1);
 
-        const prevButton = document.createElement('button');
-        prevButton.className = 'dd-search-button';
-        prevButton.textContent = 'Previous';
-        prevButton.onclick = () => navigateResults(-1);
+            const prevButton = document.createElement('button');
+            prevButton.className = 'dd-search-button';
+            prevButton.textContent = 'Previous';
+            prevButton.onclick = () => navigateResults(-1);
 
-        // Create a loading spinner
-        loadingSpinner = document.createElement('div');
-        loadingSpinner.id = 'loading-spinner';
-        loadingSpinner.style.display = 'none';
+            // Create a loading spinner
+            loadingSpinner = document.createElement('div');
+            loadingSpinner.id = 'loading-spinner';
+            loadingSpinner.style.display = 'none';
 
-        titleBar.appendChild(searchBar);
-        titleBar.appendChild(searchButton);
-        titleBar.appendChild(magicButton);
-        titleBar.appendChild(prevButton);
-        titleBar.appendChild(nextButton);
-        titleBar.appendChild(loadingSpinner);
+            titleBar.appendChild(searchBar);
+            titleBar.appendChild(searchButton);
+            titleBar.appendChild(magicButton);
+            titleBar.appendChild(prevButton);
+            titleBar.appendChild(nextButton);
+            titleBar.appendChild(loadingSpinner);
 
             // Event listeners
             searchBar.addEventListener('input', debounce(handleSearch, 300));
@@ -232,6 +233,11 @@
 
             if (result.length > 0) {
                 focusOnWidget(currentIndex);
+                // Automatically apply filtering to show only matching widgets
+                applyFilter();
+            } else {
+                // Clear filtering when no results found
+                clearFilter();
             }
         }
 
@@ -241,8 +247,99 @@
             });
         }
 
+        function applyFilter() {
+            if (!currentResults || currentResults.length === 0) {
+                return;
+            }
+
+            // Store original states if not already stored
+            if (originalWidgetStates.size === 0) {
+                // Only look for actual dashboard widgets, not all elements with IDs
+                const elements = document.querySelectorAll('.dashboard_widget');
+                elements.forEach(element => {
+                    const id = element.id;
+                    if (id && id.trim()) {
+                        originalWidgetStates.set(id, {
+                            display: element.style.display,
+                            visibility: element.style.visibility,
+                            opacity: element.style.opacity
+                        });
+                    }
+                });
+            }
+
+            // Get all widget IDs from search results
+            const matchingIds = currentResults.map(result => result.id);
+            console.log('DD Search: Filtering to show only these widgets:', matchingIds);
+
+            // Hide only dashboard widgets, not all elements
+            const dashboardWidgets = document.querySelectorAll('.dashboard_widget');
+            dashboardWidgets.forEach(widget => {
+                const id = widget.id;
+                if (id && id.trim() && !matchingIds.includes(id)) {
+                    widget.classList.add('widget-filtered-out');
+                    widget.style.display = 'none';
+                    console.log('DD Search: Hiding widget:', id);
+                }
+            });
+
+            // Ensure matching widgets are visible
+            matchingIds.forEach(id => {
+                const widget = document.getElementById(id);
+                if (widget && widget.classList.contains('dashboard_widget')) {
+                    widget.classList.remove('widget-filtered-out');
+                    widget.classList.add('widget-filtered-in');
+                    widget.style.display = '';
+                    console.log('DD Search: Showing widget:', id);
+                } else {
+                    console.log('DD Search: Widget not found or not a dashboard widget:', id);
+                }
+            });
+        }
+
+        function clearFilter() {
+            console.log('DD Search: Clearing filter, restoring all widgets');
+            
+            // Restore original display states for dashboard widgets only
+            originalWidgetStates.forEach((state, id) => {
+                const widget = document.getElementById(id);
+                if (widget && widget.classList.contains('dashboard_widget')) {
+                    widget.classList.remove('widget-filtered-out', 'widget-filtered-in');
+                    
+                    // Restore original styles
+                    if (state.display !== undefined) {
+                        widget.style.display = state.display || '';
+                    }
+                    if (state.visibility !== undefined) {
+                        widget.style.visibility = state.visibility || '';
+                    }
+                    if (state.opacity !== undefined) {
+                        widget.style.opacity = state.opacity || '';
+                    }
+                }
+            });
+
+            // Also clear any remaining filtered dashboard widgets
+            const filteredWidgets = document.querySelectorAll('.dashboard_widget.widget-filtered-out, .dashboard_widget.widget-filtered-in');
+            filteredWidgets.forEach(widget => {
+                widget.classList.remove('widget-filtered-out', 'widget-filtered-in');
+                widget.style.display = '';
+            });
+
+            // Clear the stored states
+            originalWidgetStates.clear();
+        }
+
         async function handleMagicButtonClick() {
             const { query, storedData } = getPreprocessedData();
+            
+            // If search is empty, clear filter and show all widgets
+            if (!query.trim()) {
+                clearFilter();
+                displaySearchResults([]);
+                return;
+            }
+            
             const result = await handleMagicSearch(storedData, query);
             handlePostprocessing(result);
         }
@@ -324,6 +421,14 @@
 
         async function handleSearch() {
             const { query, storedData } = getPreprocessedData();
+            
+            // If search is empty, clear filter and show all widgets
+            if (!query.trim()) {
+                clearFilter();
+                displaySearchResults([]);
+                return;
+            }
+            
             const result = handleStandardSearch(storedData, query);
             handlePostprocessing(result);
         }
@@ -508,74 +613,50 @@
         style.textContent = `.dd-search-highlight { background-color: #ffeb3b !important; border: 2px solid #ff9800 !important; border-radius: 4px !important; }`;
         document.head.appendChild(style);
 
-        // Fonction pour créer une interface flottante en fallback
-        function createFloatingUI() {
-            const container = document.createElement('div');
-            container.id = 'dd-search-container';
-            container.innerHTML = `
-                <div style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 320px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-                    <div style="font-weight: 600; margin-bottom: 10px; color: #333; font-size: 14px;">🔍 DD Search</div>
-
-                    <div style="display: flex; gap: 5px; margin-bottom: 10px;">
-                        <input type="text" id="dash-search-widget" placeholder="Search Widgets..."
-                               style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px;">
-                        <button id="search-btn" style="padding: 8px 12px; background: #3279d7; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px;">🔍</button>
-                        <button id="magic-btn" style="padding: 8px 12px; background: #3279d7; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px;">🔮</button>
-                    </div>
-
-                    <div style="display: flex; gap: 5px; align-items: center;">
-                        <button id="prev-btn" style="padding: 6px 10px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 12px;">◀</button>
-                        <button id="next-btn" style="padding: 6px 10px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 12px;">▶</button>
-                        <div id="match-count" style="flex: 1; font-size: 12px; color: #666; text-align: center;"></div>
-                        <button id="close-btn" style="padding: 6px 10px; background: #ff4444; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">×</button>
-                    </div>
-
-                    <div id="loading-spinner" style="display: none; text-align: center; margin-top: 10px; color: #666; font-size: 12px;">🔄 Recherche...</div>
-                </div>
-            `;
-
-            container.style.cssText = `position: fixed !important; top: 20px !important; right: 20px !important; z-index: 10000 !important;`;
-            document.body.appendChild(container);
-
-            // Récupérer les éléments
-            searchBar = document.getElementById('dash-search-widget');
-            loadingSpinner = document.getElementById('loading-spinner');
-
-            // Event listeners
-            searchBar.addEventListener('input', debounce(handleSearch, 300));
-            searchBar.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') handleSearch();
-                if (e.key === 'ArrowDown') navigateResults(1);
-                if (e.key === 'ArrowUp') navigateResults(-1);
-            });
-
-            document.getElementById('search-btn').addEventListener('click', handleSearch);
-            document.getElementById('magic-btn').addEventListener('click', handleMagicButtonClick);
-            document.getElementById('prev-btn').addEventListener('click', () => navigateResults(-1));
-            document.getElementById('next-btn').addEventListener('click', () => navigateResults(1));
-            document.getElementById('close-btn').addEventListener('click', () => container.remove());
-
-            searchBar.focus();
-        }
-
         // Initialisation
         addCss();
 
-        // Attendre que .title_bar soit chargé (comme Lucas Verdonk)
-        waitForElement('.title_bar', document, function (t) {
-            titleBar = t;
-            if (titleBar) {
-                createUI(titleBar);
-                parseWidgets();
+        // Try multiple selectors for the title bar
+        const titleBarSelectors = [
+            '.title_bar',
+            '.title-bar', 
+            '.dashboard-title-bar',
+            '.dashboard-header',
+            '[data-testid="dashboard-title"]',
+            '.dashboard-title',
+            'header'
+        ];
+
+        let titleBarFound = false;
+
+        // Try each selector
+        titleBarSelectors.forEach(selector => {
+            if (!titleBarFound) {
+                waitForElement(selector, document, function (t) {
+                    if (!titleBarFound) {
+                        titleBar = t;
+                        titleBarFound = true;
+                        console.log('DD Search: Found title bar with selector:', selector);
+                        createUI(titleBar);
+                        parseWidgets();
+                    }
+                }, 5, 300); // Shorter timeout per selector
             }
         });
 
-        // Fallback si .title_bar n'est pas trouvé après 5 secondes
+        // If no title bar found, wait longer and try again
         setTimeout(() => {
-            if (!titleBar) {
-                createFloatingUI();
-                parseWidgets();
+            if (!titleBarFound) {
+                console.log('DD Search: No title bar found, trying again...');
+                // Try again with a longer wait
+                waitForElement('.title_bar', document, function (t) {
+                    titleBar = t;
+                    titleBarFound = true;
+                    console.log('DD Search: Found title bar on second try');
+                    createUI(titleBar);
+                    parseWidgets();
+                }, 10, 1000);
             }
-        }, 5000);
+        }, 3000);
 
     })();
