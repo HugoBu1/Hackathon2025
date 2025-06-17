@@ -474,7 +474,7 @@
 
             if (!results || results.length === 0) {
                 const noResults = document.createElement('li');
-                noResults.textContent = 'Aucun résultat trouvé';
+                noResults.textContent = 'No results found';
                 noResults.style.fontStyle = 'italic';
                 noResults.style.color = '#666';
                 resultList.appendChild(noResults);
@@ -556,7 +556,7 @@
                     document.body.appendChild(countDisplay);
                 }
             }
-            countDisplay.textContent = count + ' résultats';
+            countDisplay.textContent = count + ' results';
         }
 
         function parseWidgets() {
