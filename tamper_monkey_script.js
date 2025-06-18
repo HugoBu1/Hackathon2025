@@ -367,7 +367,6 @@
                 if (e.key === 'ArrowDown') navigateResults(1);
                 if (e.key === 'ArrowUp') navigateResults(-1);
             });
-<<<<<<< HEAD
             
             // Faire réapparaître la liste quand on clique sur la barre de recherche
             searchBar.addEventListener('click', () => {
@@ -397,8 +396,6 @@
                     }
                 }
             });
-=======
->>>>>>> f52273a (description)
         }
 
         function debounce(func, wait) {
