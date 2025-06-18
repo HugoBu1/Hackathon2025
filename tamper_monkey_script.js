@@ -251,7 +251,7 @@
                 }
 
                 #dd-search-container .widget-explanation {
-                    font-weight: 400;
+                    font-weight: 400 !important;
                     color: #6b7280;
                     font-size: 12px;
                     line-height: 1.3;
