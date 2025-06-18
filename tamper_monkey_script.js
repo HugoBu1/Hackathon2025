@@ -561,7 +561,9 @@
                 `User query: "${query}"\n\n` +
                 `widgets: ${JSON.stringify(storedData)}\n\n` +
                 `the output should be JSON with the following format:\n\n` +
-                `{ "widgets": [{"id":"id","title":"title : title of the widget and a short explanation of why it is relevant","exists":true/false}] }\n\n` +
+                `{ "widgets": [{"id":"id","title":"title : and why it is relevant","exists":true/false}] }\n\n` +
+                `Example output:\n` +
+                `{ "widgets": [{"id":"widget_123","title":"CPU Usage : High CPU metrics matching search criteria","exists":true}, {"id":"widget_456","title":"Memory Stats : Related memory monitoring","exists":true}] }\n\n` +
                 `Do not add any other words to the answer, just the JSON.\n\n` +
                 `produce a maximum of 6 results or less\n\n` +
                 `make sure that the widget ids are correct compared to the ids in the widgets list if they are incorrect write exists:false\n\n` +
