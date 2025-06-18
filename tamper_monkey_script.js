@@ -695,20 +695,42 @@
             results.forEach((result, index) => {
                 const listItem = document.createElement('li');
                 
-                const widgetName = document.createElement('div');
-                widgetName.className = 'widget-name';
-                widgetName.textContent = result.title || 'Untitled Widget';
-                
-                listItem.appendChild(widgetName);
-                
-                // Only add explanation div if there's meaningful content (not the default placeholder)
-                if (result.explanation && 
-                    result.explanation.trim() !== '' && 
-                    result.explanation !== 'No description available') {
-                    const widgetExplanation = document.createElement('div');
-                    widgetExplanation.className = 'widget-explanation';
-                    widgetExplanation.textContent = result.explanation;
-                    listItem.appendChild(widgetExplanation);
+                // Vérifier si c'est un résultat de magic search (contient ":")
+                if (result.title && result.title.includes(':')) {
+                    // Parser le titre pour séparer nom et explication
+                    const colonIndex = result.title.indexOf(':');
+                    const widgetName = result.title.substring(0, colonIndex).trim();
+                    const explanation = result.title.substring(colonIndex + 1).trim();
+                    
+                    // Créer l'élément nom du widget
+                    const widgetNameDiv = document.createElement('div');
+                    widgetNameDiv.className = 'widget-name';
+                    widgetNameDiv.textContent = widgetName;
+                    listItem.appendChild(widgetNameDiv);
+                    
+                    // Créer l'élément explication si il y en a une
+                    if (explanation) {
+                        const widgetExplanationDiv = document.createElement('div');
+                        widgetExplanationDiv.className = 'widget-explanation';
+                        widgetExplanationDiv.textContent = explanation;
+                        listItem.appendChild(widgetExplanationDiv);
+                    }
+                } else {
+                    // Résultat standard (pas de magic search)
+                    const widgetNameDiv = document.createElement('div');
+                    widgetNameDiv.className = 'widget-name';
+                    widgetNameDiv.textContent = result.title || 'Untitled Widget';
+                    listItem.appendChild(widgetNameDiv);
+                    
+                    // Ajouter l'explication si elle existe et n'est pas le placeholder par défaut
+                    if (result.explanation && 
+                        result.explanation.trim() !== '' && 
+                        result.explanation !== 'No description available') {
+                        const widgetExplanationDiv = document.createElement('div');
+                        widgetExplanationDiv.className = 'widget-explanation';
+                        widgetExplanationDiv.textContent = result.explanation;
+                        listItem.appendChild(widgetExplanationDiv);
+                    }
                 }
                 
                 listItem.onclick = () => {
@@ -727,7 +749,10 @@
             const titleBar = document.querySelector('.title_bar');
             const headerOffset = titleBar ? titleBar.offsetHeight : 0;
             const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-            const offsetPosition = elementPosition - headerOffset;
+            const windowHeight = window.innerHeight;
+            
+            // Calculer la position pour centrer l'élément au milieu de la page
+            const offsetPosition = elementPosition - (windowHeight / 2) + (element.offsetHeight / 2) + headerOffset;
 
             window.scrollTo({
                 top: offsetPosition,
