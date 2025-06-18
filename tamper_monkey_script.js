@@ -383,6 +383,19 @@
                     resultList.style.display = 'block';
                 }
             });
+            
+            // Fermer la liste quand on clique en dehors
+            document.addEventListener('click', (event) => {
+                const resultList = document.getElementById('search-results');
+                const searchContainer = document.getElementById('dd-search-container');
+                
+                if (resultList && searchContainer) {
+                    // Vérifier si le clic est en dehors du container de recherche
+                    if (!searchContainer.contains(event.target)) {
+                        resultList.style.display = 'none';
+                    }
+                }
+            });
         }
 
         function debounce(func, wait) {
