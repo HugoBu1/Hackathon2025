@@ -686,12 +686,28 @@
                 widgetName.className = 'widget-name';
                 widgetName.textContent = result.title || 'Untitled Widget';
 
+
                 const widgetExplanation = document.createElement('div');
                 widgetExplanation.className = 'widget-explanation';
                 widgetExplanation.textContent = result.explanation || 'No description available';
 
                 listItem.appendChild(widgetName);
                 listItem.appendChild(widgetExplanation);
+
+
+                
+                listItem.appendChild(widgetName);
+                
+                // Only add explanation div if there's meaningful content (not the default placeholder)
+                if (result.explanation && 
+                    result.explanation.trim() !== '' && 
+                    result.explanation !== 'No description available') {
+                    const widgetExplanation = document.createElement('div');
+                    widgetExplanation.className = 'widget-explanation';
+                    widgetExplanation.textContent = result.explanation;
+                    listItem.appendChild(widgetExplanation);
+                }
+                
 
                 listItem.onclick = () => {
                     focusOnWidget(index);
