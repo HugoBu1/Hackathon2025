@@ -72,7 +72,7 @@
             const style = document.createElement('style');
             style.innerHTML = `
                 /* Datadog Native Design System */
-
+                
                 /* Loading Spinner - Datadog Style */
                 #loading-spinner {
                     border: 3px solid #f3f4f6;
@@ -264,12 +264,12 @@
                         flex-direction: column;
                         align-items: stretch;
                     }
-
+                    
                     #dd-search-container #dash-search-widget {
                         width: 100%;
                         margin-bottom: 8px;
                     }
-
+                    
                     .dd-search-button {
                         width: 100%;
                         margin-bottom: 4px;
@@ -280,13 +280,13 @@
                     #dd-search-container {
                         padding: 8px 12px;
                     }
-
+                    
                     .dd-search-button {
                         height: 28px;
                         font-size: 12px;
                         padding: 0 8px;
                     }
-
+                    
                     #dd-search-container #dash-search-widget {
                         height: 28px;
                         font-size: 13px;
@@ -314,11 +314,11 @@
                 console.log('DD Search: Removing existing UI before creating new one');
                 existingContainer.remove();
             }
-
+            
             // Create a container that wraps all search elements
             const searchContainer = document.createElement('div');
             searchContainer.id = 'dd-search-container';
-
+            
             searchBar.type = 'text';
             searchBar.id = 'dash-search-widget';
             searchBar.placeholder = 'Search widgets...';
@@ -367,6 +367,7 @@
                 if (e.key === 'ArrowDown') navigateResults(1);
                 if (e.key === 'ArrowUp') navigateResults(-1);
             });
+<<<<<<< HEAD
             
             // Faire réapparaître la liste quand on clique sur la barre de recherche
             searchBar.addEventListener('click', () => {
@@ -396,6 +397,8 @@
                     }
                 }
             });
+=======
+>>>>>>> f52273a (description)
         }
 
         function debounce(func, wait) {
@@ -479,7 +482,7 @@
             // Ensure matching widgets are visible
             matchingIds.forEach(id => {
                 let widget = document.getElementById(id);
-
+                
                 // Essayer les différents formats d'ID
                 if (!widget && id.startsWith('widget_')) {
                     widget = document.getElementById(id.replace('widget_', ''));
@@ -487,7 +490,7 @@
                 if (!widget && !id.startsWith('widget_')) {
                     widget = document.getElementById(`widget_${id}`);
                 }
-
+                
                 if (widget && widget.classList.contains('dashboard_widget')) {
                     widget.classList.remove('widget-filtered-out');
                     widget.classList.add('widget-filtered-in');
@@ -501,13 +504,13 @@
 
         function clearFilter() {
             console.log('DD Search: Clearing filter, restoring all widgets');
-
+            
             // Restore original display states for dashboard widgets only
             originalWidgetStates.forEach((state, id) => {
                 const widget = document.getElementById(id);
                 if (widget && widget.classList.contains('dashboard_widget')) {
                     widget.classList.remove('widget-filtered-out', 'widget-filtered-in');
-
+                    
                     // Restore original styles
                     if (state.display !== undefined) {
                         widget.style.display = state.display || '';
@@ -534,14 +537,14 @@
 
         async function handleMagicButtonClick() {
             const { query, storedData } = getPreprocessedData();
-
+            
             // If search is empty, clear filter and show all widgets
             if (!query.trim()) {
                 clearFilter();
                 displaySearchResults([]);
                 return;
             }
-
+            
             const result = await handleMagicSearch(storedData, query);
             handlePostprocessing(result);
         }
@@ -623,14 +626,14 @@
 
         async function handleSearch() {
             const { query, storedData } = getPreprocessedData();
-
+            
             // If search is empty, clear filter and show all widgets
             if (!query.trim()) {
                 clearFilter();
                 displaySearchResults([]);
                 return;
             }
-
+            
             const result = handleStandardSearch(storedData, query);
             handlePostprocessing(result);
         }
@@ -694,20 +697,10 @@
 
             results.forEach((result, index) => {
                 const listItem = document.createElement('li');
-
+                
                 const widgetName = document.createElement('div');
                 widgetName.className = 'widget-name';
                 widgetName.textContent = result.title || 'Untitled Widget';
-
-
-                const widgetExplanation = document.createElement('div');
-                widgetExplanation.className = 'widget-explanation';
-                widgetExplanation.textContent = result.explanation || 'No description available';
-
-                listItem.appendChild(widgetName);
-                listItem.appendChild(widgetExplanation);
-
-
                 
                 listItem.appendChild(widgetName);
                 
@@ -721,12 +714,11 @@
                     listItem.appendChild(widgetExplanation);
                 }
                 
-
                 listItem.onclick = () => {
                     focusOnWidget(index);
                     resultList.style.display = 'none';
                 };
-
+                
                 resultList.appendChild(listItem);
             });
 
@@ -738,10 +730,7 @@
             const titleBar = document.querySelector('.title_bar');
             const headerOffset = titleBar ? titleBar.offsetHeight : 0;
             const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-            const windowHeight = window.innerHeight;
-            
-            // Calculer la position pour placer l'élément plus bas que le centre (au 1/3 du haut)
-            const offsetPosition = elementPosition - (windowHeight * 0.65) + (element.offsetHeight / 2) + headerOffset;
+            const offsetPosition = elementPosition - headerOffset;
 
             window.scrollTo({
                 top: offsetPosition,
@@ -761,13 +750,13 @@
 
             const targetWidgetId = currentResults[index].id;
             let targetWidget = document.getElementById(targetWidgetId);
-
+            
             // Si pas trouvé avec l'ID complet, essayer sans le préfixe "widget_"
             if (!targetWidget && targetWidgetId.startsWith('widget_')) {
                 const simpleId = targetWidgetId.replace('widget_', '');
                 targetWidget = document.getElementById(simpleId);
             }
-
+            
             // Si toujours pas trouvé, essayer avec le préfixe
             if (!targetWidget && !targetWidgetId.startsWith('widget_')) {
                 targetWidget = document.getElementById(`widget_${targetWidgetId}`);
@@ -800,13 +789,13 @@
         function updateMatchCount(count) {
             let matchCountElement = document.getElementById('match-count');
             const searchContainer = document.getElementById('dd-search-container');
-
+            
             if (!matchCountElement && searchContainer) {
                 matchCountElement = document.createElement('div');
                 matchCountElement.id = 'match-count';
                 searchContainer.appendChild(matchCountElement);
             }
-
+            
             if (matchCountElement) {
                 if (count > 0) {
                     matchCountElement.textContent = `${count} match${count > 1 ? 'es' : ''}`;
@@ -821,19 +810,19 @@
         async function parseWidgets() {
             console.log('🔍 Parsing des widgets avec extraction de queries...');
             const widgetData = [];
-
+            
             // Extraire l'ID du dashboard depuis l'URL
             const dashboardPath = window.location.pathname.split('/dashboard/')[1]?.split('?')[0];
             const dashboardId = dashboardPath?.split('/')[0]; // Ne prendre que la première partie avant le '/'
             console.log(`📊 Dashboard path: ${dashboardPath}`);
             console.log(`📊 Dashboard ID extrait: ${dashboardId}`);
-
+            
             if (dashboardId) {
                 try {
                     console.log('🌐 Tentative de récupération des données via API...');
                     const apiUrl = `https://app.datadoghq.com/api/v1/dashboard/${dashboardId}?with_full_response=true`;
                     console.log(`📡 API URL: ${apiUrl}`);
-
+                    
                     const response = await fetch(apiUrl, {
                         method: 'GET',
                         credentials: 'include',
@@ -842,28 +831,28 @@
                             'X-Requested-With': 'XMLHttpRequest'
                         }
                     });
-
+                    
                     if (response.ok) {
                         const dashboardData = await response.json();
                         console.log(`✅ Données API récupérées!`);
                         console.log(`📊 Dashboard: "${dashboardData.title}"`);
                         console.log(`📊 Widgets: ${dashboardData.widgets?.length || 0}`);
-
+                        
                         if (dashboardData.widgets?.length > 0) {
                             // Fonction récursive pour extraire tous les widgets et leurs queries
                             function extractAllWidgets(widgets, parentTitle = '', depth = 0) {
                                 let extractedWidgets = [];
                                 const indent = '  '.repeat(depth);
-
+                                
                                 console.log(`${indent}📋 Niveau ${depth}: ${widgets.length} widgets à analyser`);
-
+                                
                                 widgets.forEach((widget, index) => {
                                     try {
                                         const id = widget.id?.toString() || `temp_${depth}_${index}`;
                                         const definition = widget.definition || {};
                                         const title = definition.title || `Widget-${index}`;
                                         const widgetType = definition.type || 'unknown';
-
+                                        
                                         // Si c'est un groupe avec des widgets enfants
                                         if (widgetType === 'group' && definition.widgets?.length > 0) {
                                             console.log(`${indent}📁 Groupe "${title}" → ${definition.widgets.length} enfants`);
@@ -872,13 +861,13 @@
                                         } else if (widgetType !== 'note' && widgetType !== 'group') {
                                             // Extraire les queries du widget
                                             const queries = extractWidgetQueries(definition);
-
+                                            
                                             // Construction du texte enrichi
                                             let enrichedText = title;
                                             if (parentTitle) {
                                                 enrichedText = `${parentTitle} > ${title}`;
                                             }
-
+                                            
                                             // Ajouter les queries nettoyées au texte enrichi
                                             if (queries.length > 0) {
                                                 const cleanQueries = queries.map(q => {
@@ -888,15 +877,15 @@
                                                     const jobs = q.match(/job:[\w\-\*]+/g) || [];
                                                     const flavors = q.match(/flavor:[\w\-\*]+/g) || [];
                                                     const tags = q.match(/[\w\-]+:[\w\-\*]+/g) || [];
-
+                                                    
                                                     return [...metrics, ...services, ...jobs, ...flavors, ...tags.slice(0, 5)].join(' ');
                                                 }).filter(q => q.trim().length > 0);
-
+                                                
                                                 if (cleanQueries.length > 0) {
                                                     enrichedText += ' ' + cleanQueries.join(' ');
                                                 }
                                             }
-
+                                            
                                             const finalWidget = {
                                                 id: `widget_${id}`, // S'assurer que l'ID correspond au DOM
                                                 title: title,
@@ -904,12 +893,12 @@
                                                 enrichedText: enrichedText.trim(),
                                                 type: widgetType
                                             };
-
+                                            
                                             extractedWidgets.push(finalWidget);
                                             console.log(`${indent}✅ "${title}" (${queries.length} queries)`);
-
+                                            
                                             // Debug spécial pour "delancie"
-                                            if (title.toLowerCase().includes('delancie') ||
+                                            if (title.toLowerCase().includes('delancie') || 
                                                 enrichedText.toLowerCase().includes('delancie') ||
                                                 queries.some(q => q.toLowerCase().includes('delancie'))) {
                                                 console.log(`${indent}🎯 DELANCIE FOUND: "${title}"`);
@@ -924,25 +913,25 @@
                                         console.error(`${indent}❌ Erreur parsing widget ${index}:`, error);
                                     }
                                 });
-
+                                
                                 return extractedWidgets;
                             }
-
+                            
                             // Fonction pour extraire les queries d'un widget
                             function extractWidgetQueries(definition) {
                                 const queries = [];
-
+                                
                                 function findQueries(obj, path = '') {
                                     if (!obj || typeof obj !== 'object') return;
-
+                                    
                                     for (const key in obj) {
                                         const value = obj[key];
                                         const currentPath = path ? `${path}.${key}` : key;
-
+                                        
                                         // Query simple (string)
                                         if (key === 'query' && typeof value === 'string' && value.trim()) {
                                             queries.push(value.trim());
-                                        }
+                                        } 
                                         // Array de queries
                                         else if (key === 'queries' && Array.isArray(value)) {
                                             value.forEach((q) => {
@@ -967,20 +956,20 @@
                                         }
                                     }
                                 }
-
+                                
                                 findQueries(definition);
                                 return [...new Set(queries)]; // Dédupliquer
                             }
-
+                            
                             // Extraire tous les widgets
                             const allWidgets = extractAllWidgets(dashboardData.widgets);
                             widgetData.push(...allWidgets);
-
+                            
                             console.log(`🎯 Extraction API terminée: ${widgetData.length} widgets`);
-
+                            
                             // Debug final pour "delancie"
-                            const delancieWidgets = widgetData.filter(w =>
-                                w.title.toLowerCase().includes('delancie') ||
+                            const delancieWidgets = widgetData.filter(w => 
+                                w.title.toLowerCase().includes('delancie') || 
                                 w.enrichedText.toLowerCase().includes('delancie') ||
                                 w.queries.some(q => q.toLowerCase().includes('delancie'))
                             );
@@ -997,7 +986,7 @@
                     console.warn('❌ Erreur récupération API, fallback vers DOM:', error);
                 }
             }
-
+            
             // Fallback: parsing DOM si l'API échoue
             if (widgetData.length === 0) {
                 console.log('📋 Fallback vers parsing DOM...');
@@ -1009,7 +998,7 @@
                         const title = titleElement?.textContent || 'notitle';
                         if (title !== 'notitle') {
                             widgetData.push({
-                                id,
+                                id, 
                                 title,
                                 enrichedText: title,
                                 queries: [],
@@ -1031,7 +1020,7 @@
                             const exists = widgetData.find(w => w.id === id);
                             if (!exists) {
                                 widgetData.push({
-                                    id,
+                                    id, 
                                     title,
                                     enrichedText: title,
                                     queries: [],
@@ -1080,7 +1069,7 @@
             // Try multiple selectors for the title bar
             const titleBarSelectors = [
                 '.title_bar',
-                '.title-bar',
+                '.title-bar', 
                 '.dashboard-title-bar',
                 '.dashboard-header',
                 '[data-testid="dashboard-title"]',
@@ -1122,23 +1111,23 @@
         // Fonction de nettoyage
         function cleanup() {
             console.log('DD Search: Nettoyage en cours...');
-
+            
             // Remove ALL search containers first (including duplicates)
             const searchContainers = document.querySelectorAll('#dd-search-container');
             searchContainers.forEach(container => {
                 console.log('DD Search: Suppression container de recherche');
                 container.remove();
             });
-
+            
             // Supprimer tous les éléments de l'interface de recherche individuellement
             const existingElements = [
-                '#dash-search-widget',
-                '#search-results',
-                '#match-count',
+                '#dash-search-widget', 
+                '#search-results', 
+                '#match-count', 
                 '#loading-spinner',
                 '.dd-search-button' // Supprimer tous les boutons
             ];
-
+            
             existingElements.forEach(selector => {
                 const elements = document.querySelectorAll(selector); // Utiliser querySelectorAll pour les classes
                 elements.forEach(element => {
@@ -1155,7 +1144,7 @@
             titleBarFound = false; // Reset this flag too
             clearFilter();
             clearHighlights();
-
+            
             console.log('DD Search: Nettoyage terminé');
         }
 
@@ -1164,7 +1153,7 @@
             if (window.location.href !== currentUrl) {
                 currentUrl = window.location.href;
                 console.log('DD Search: URL changée vers', currentUrl);
-
+                
                 // Réinitialiser seulement si c'est un dashboard
                 if (currentUrl.includes('/dashboard/')) {
                     setTimeout(() => {
